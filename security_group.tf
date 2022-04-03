@@ -1,5 +1,5 @@
 #보안 그룹 설정
-resource "aws_security_group" "ssh" {
+resource "aws_security_group" "k5s_security_group" {
     //vpc_id = "${moudle.vpc.vpc_id}" # 생성할 VPC ID
     name = "allow_ssh_HTTP_ping_from_all"
     description = "allow_ssh_HTTP_ping_from_all"
