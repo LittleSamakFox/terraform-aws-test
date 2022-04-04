@@ -1,20 +1,29 @@
 # terraform-aws-test
 
-IaC로 인프라를 코드로 프로비저닝하고 관리한다
+terraform aws proviser
 
-## 사용방식(수정 예정)
+## aws architecture diagram
+![aws architecture diagram](https://github.com/LittleSamakFox/terraform-aws-test/blob/main/terraform_aws_architecture_diagram.png?raw=true)
 
-### 초기화 init
+
+## how to use
+
+### init
 ```bash
 $terraform init
 ```
 
-### 작성한 tf가 작동하는지 체크
+### plan
 ```bash
 $terraform plan
 ```
 
-### 작성한 tf로 인프라 프로비저닝
+### apply
 ```bash
 $terraform apply
+```
+
+### destroy
+```bash
+$terraform destroy
 ```
