@@ -1,14 +1,18 @@
 resource "aws_instance" "k5s_bastion" {
     ami = "ami-033a6a056910d1137"
-    availability_zone = aws_subnet.k5s_public_subnet_1.availability_zone
+    availability_zone = aws_subnet.k5s_public_subnet.0.availability_zone
     instance_type = "t2.micro"
     key_name = aws_key_pair.k5s_key.key_name
     vpc_security_group_ids = [
         aws_default_security_group.k5s_vpc_sg_default.id,
         aws_security_group.k5s_sg_bastion.id
     ]
-    subnet_id = aws_subnet.k5s_public_subnet_1.id
+    subnet_id = aws_subnet.k5s_public_subnet.0.id
     associate_public_ip_address = true
+
+    tags = {
+      "Name" = "${var.aws_default_name}-BastionHost"
+    }
 }
 
 resource "aws_eip" "k5s_bastion_eip" {
@@ -19,13 +23,16 @@ resource "aws_eip" "k5s_bastion_eip" {
 
 resource "aws_instance" "k5s_instance" {
     ami = "ami-033a6a056910d1137"
-    availability_zone = aws_subnet.k5s_private_subnet_1.availability_zone
+    availability_zone = aws_subnet.k5s_private_subnet[count.index].availability_zone
     instance_type = "t2.micro"
     key_name = aws_key_pair.k5s_key.key_name
-    count=2
+    count=length(var.aws_vpc_private_subnets)
     vpc_security_group_ids = [
         aws_default_security_group.k5s_vpc_sg_default.id,
         aws_security_group.k5s_sg_bastion.id
     ]
-    subnet_id = aws_subnet.k5s_private_subnet_1.id
+    subnet_id = aws_subnet.k5s_private_subnet[count.index].id
+    tags = {
+      "Name" = "${var.aws_default_name}-private-ec2"
+    }
 }
